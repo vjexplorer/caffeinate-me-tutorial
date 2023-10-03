@@ -1,15 +1,18 @@
 package caffeinateme.model;
+import java.util.List;
 
 public class Order {
 
     private Customer customer;
     private OrderItem item;
+    private List<OrderItem> itemList;
     private OrderStatus status;
     private String comments;
 
-    public Order(Customer customer,OrderItem item){
+    public Order(Customer customer,List<OrderItem> item){
         this.customer = customer;
-        this.item = item;
+        //this.item = item;
+        this.itemList=item;
     }
 
     public Customer getCustomer() {
@@ -39,6 +42,10 @@ public class Order {
         return this;
     }
 
+    public List<OrderItem> getItemList() {
+        return itemList;
+    }
+
     public static class OrderBuilder {
         private final int quantity;
         private final String orderedProduct;
@@ -49,7 +56,7 @@ public class Order {
         }
 
         public Order forCustomer(Customer customer) {
-            return new Order(customer,new OrderItem(orderedProduct,quantity));
+            return new Order(customer,List.of(new OrderItem(orderedProduct,quantity)));
         }
 
     }

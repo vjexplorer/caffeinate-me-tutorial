@@ -6,19 +6,34 @@ Feature: Order a coffee
   Background:
     Given Cathy is a CaffeinateMe customer
 
-  Scenario: Buyer orders a coffee when close to the coffee shop
+  Rule: Buyer orders an item closer to store, order is considered as Urgent
+  Example: Buyer orders a coffee when close to the coffee shop
     Given Cathy is 100 meters from the coffee shop
     When Cathy orders a "large cappuccino"
     Then Barry should receive the order
     And Barry should know that the coffee is Urgent
 
-  Scenario: Buyer orders a coffee when far from the coffee shop
+  Example: Buyer orders a coffee when far from the coffee shop
     Given Cathy is 300 meters from the coffee shop
     When Cathy orders a "regular latte"
     Then Barry should receive the order
     And Barry should know that the coffee is Normal
 
-  Scenario: Buyers can add a comment with their order
+   Rule: Buyer can add additional instructions when they order an item
+   Example: Buyers can add a comment with their order
     When Cathy orders a "large cappuccino" with a comment "Non Dairy and Double sugar"
     Then Barry should receive the order
     And the order should have the comment "Non Dairy and Double sugar"
+
+
+  Rule: Buyers can order many items in the same order
+    Example: A buyer orders two items in the same order
+      When Cathy places an order for the following items:
+        | Product          | Quantity |
+        | Large cappuccino | 1        |
+        | Espresso         | 2        |
+      Then Barry should receive the order
+      And the order should contain 2 line items
+      And the order should contain the following products:
+        | Large cappuccino |
+        | Espresso         |
